@@ -2,7 +2,6 @@
 
 
 (function ($, root) {
-
   function renderImage(dataList, index) {
     var img = new Image();
     var len = dataList.length;
@@ -22,7 +21,6 @@
 
     var str = '<div class="song-name">' + info.song + '</div>\
         <div class="sliger-name">' + info.singer + '</div>';
-
     $('.song-info').html(str);
   }
 
@@ -40,5 +38,4 @@
     renderInfo(dataList[index]);
     renderIsLike(dataList[index].isLike)
   }
-
 })(window.Zepto, window.player || (window.player = {}))

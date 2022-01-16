@@ -65,7 +65,7 @@ const js = () => {
 }
 
 // 创建处理图片文件任务     拿到文件并监听修改、执行压缩、最后打包输出的文件地址 ./dist/images/
-const image = () => src(folder.src + 'images/*').pipe(imgMin()).pipe(dest(folder.dist + 'images/'))
+const image = () => src(folder.src + 'image/*').pipe(imgMin()).pipe(dest(folder.dist + 'image/'))
 
 // 开启服务
 const server = () => {
@@ -78,5 +78,6 @@ const server = () => {
 watch([folder.src + 'html/*'], html);
 watch([folder.src + 'less/*'], css);
 watch([folder.src + 'js/*'], js);
+watch([folder.src + 'image/*'], image);
 
 exports.default = parallel(html, css, js, image, server)

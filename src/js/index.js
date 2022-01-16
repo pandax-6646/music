@@ -21,9 +21,6 @@ getCookie();
 
 // 记录当前歌曲在列表的位置
 var scroTop = 0;
-
-
-
 // 歌名太长进行移动
 function songName() {
   var $SongName = $('.song-info').find('.song-name')
@@ -34,7 +31,6 @@ function songName() {
   for (var i = 0; i < len; i++) {
     if (str[i].charCodeAt() > 255) {
       count++;
-
     }
   }
   nameLen = len + count;
@@ -59,13 +55,10 @@ function getData(url) {
     type: 'GET',
     url: url,
     success: function (data) {
-
       dataList = data;
-
       len = data.length;
 
       control = new root.controlIndex(len, currSongIndex);
-
 
       // 初始化渲染图片和背景高斯模糊
       root.rendering(data, currSongIndex);
@@ -176,11 +169,8 @@ function bindTouch() {
           'transition': 'none'
         })
 
-
-
         cancelAnimationFrame(timer);
         $('.arm-img').add('.play').removeClass('playing');
-
       },
 
       touchmove: function (e) {
@@ -449,7 +439,7 @@ function bindEvent() {
   })
 }
 
-//旋转
+// 旋转
 function rotate(deg) {
 
   cancelAnimationFrame(timer);
@@ -471,7 +461,7 @@ function rotate(deg) {
   frame();
 }
 
-//当前歌曲播放完毕自动切歌
+// 当前歌曲播放完毕自动切歌
 audio.bindMediaEnd(function () {
 
   cancelAnimationFrame(timer);
@@ -484,16 +474,14 @@ audio.bindMediaEnd(function () {
 
 // 把当前的歌曲索引缓存到浏览器的cookie中
 function saveCookie(currSongIndex) {
-  document.cookie = 'index=' + currSongIndex + ';max-age=1000000000';
+  document.cookie = 'song_index=' + currSongIndex + ';max-age=10000';
 }
 
 //获取cookie
 function getCookie() {
-  if (document.cookie.match(/\w+=\d+$/g) != null) {
-    var reg = /^\w+=/g
-    currSongIndex = +document.cookie.match(/\w+=\d+$/g)[0].replace(reg, function ($) {
-      return $ = '';
-    });
+  var cookie_str = document.cookie.match(/song_index=\d+/)[0]
+  if (cookie_str != null) {
+    currSongIndex = cookie_str.replace(/\w+=/g, '');
 
   } else {
     currSongIndex = 0;
