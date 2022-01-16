@@ -4,7 +4,7 @@
   function imgClickMove($In, $Move, In, Move, FuncIn, FuncOut, OutTo, MoveTo) {
     $('.arm-img').removeClass('playing');
 
-    cancelAnimationFrame(timer);
+    
 
     $In.css({
       'animation': FuncIn + '.5s cubic-bezier(0, 0, 1, 1) forwards'
@@ -37,7 +37,7 @@
         'animation': 'none'
       })
 
-      rotate(0);
+      // rotate(0);
       getCookie();
       root.rendering(dataList, currSongIndex);
       songName()
