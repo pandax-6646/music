@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/index.css">
+</head>
+
+
+
+<body>
+  <div class="wrapper">
+
+    <!-- 歌曲信息 -->
+    <div class="song-info">
+      <div class="song-name">丑八怪</div>
+      <div class="sliger-name">薛之谦</div>
+    </div>
+
+    <!-- 歌曲图片 -->
+    <div class="song-img">
+      <div class="arm-img">
+        <img src="../image/play.png" alt="">
+      </div>
+
+      <div class="img-box pro-img" data-deg=0>
+        <div>
+          <img src="../image/bg.jpg" alt="">
+        </div>
+      </div>
+      <div class="img-box curr-img" data-deg=0>
+        <div>
+          <img src="../image/bg.jpg" alt="">
+        </div>
+      </div>
+      <div class="img-box next-img" data-deg=0>
+        <div>
+          <img src="../image/bg.jpg" alt="">
+        </div>
+      </div>
+    </div>
+
+    <!-- 进度条 -->
+    <div class="pro">
+      <div class="cur-time">00:00</div>
+      <div class="pro-wrap">
+        <div class="pro-buttom">
+          <div class="pro-top">
+            <div class="slider"></div>
+          </div>
+        </div>
+      </div>
+      <div class="all-time">03:56</div>
+    </div>
+
+    <!-- 控件部分 -->
+    <div class="control" direction="none">
+      <div class="btn like"></div>
+      <div class="btn prev"></div>
+      <div class="btn play">
+        <div class="btn-play"></div>
+      </div>
+      <div class="btn next"></div>
+      <div class="btn list" song-index="0">
+        <div class="list-top">
+          <div class="head">
+            <div class="title">
+              <div>当前播放</div>
+              <span class="count"></span>
+            </div>
+            <ul>
+              <li class="song-cycle">单曲循环</li>
+              <li class="collect-all">收藏全部</li>
+            </ul>
+          </div>
+          <div class="songList">
+            <ul>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shadow"></div>
+  </div>
+
+  <script src="../js/zepto.min.js"></script>
+  <script src="../js/gaussBlur.js"></script>
+  <script src="../js/render.js"></script>
+  <script src="../js/audioControl.js"></script>
+  <script src="../js/indexControl.js"></script>
+  <script src="../js/songList.js"></script>
+  <script src="../js/progress.js"></script>
+  <script src="../js/imageSitching.js"></script>
+  <script src="../js/index.js"></script>
+</body>
+
+</html>
