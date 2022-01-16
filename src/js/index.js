@@ -103,8 +103,8 @@ function bindTouch() {
         root.progress.updata(pro);
         if ($('.play').attr('class').indexOf('playing') > -1) {
           $('.play').add('.arm-img').removeClass('playing');
-         // 碟盘停止旋转
-        //  cancelAnimationFrame(timer);
+          // 碟盘停止旋转
+          //  cancelAnimationFrame(timer);
         };
       },
 
@@ -157,7 +157,7 @@ function bindTouch() {
         $('.curr-img').css({
           'transition': 'none'
         })
-
+      
         $('.arm-img').add('.play').removeClass('playing');
         // 碟盘停止旋转
         // cancelAnimationFrame(timer);
@@ -269,6 +269,11 @@ function bindEvent() {
 
     // 歌曲索引缓存到浏览器的cookie中
     saveCookie(index)
+    // //每次切歌都将上次播放盘的旋转角度清零
+    // $('.curr-img').find('div').css({
+    //   'transform': 'translatez(0px) rotateZ(0deg)',
+    //   'transition': 'none'
+    // }).attr('data-deg', '0')
   })
 
   // 上一曲
