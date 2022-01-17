@@ -3,7 +3,6 @@ var root = window.player;
 // 记录请求到的数据
 var dataList;
 
-
 var audio = root.audioManager;
 var list;
 var control;
@@ -18,6 +17,7 @@ getCookie();
 
 // 记录当前歌曲在列表的位置
 var scroTop = 0;
+
 // 歌名太长进行移动
 function songName() {
   var $SongName = $('.song-info').find('.song-name')
@@ -28,6 +28,7 @@ function songName() {
   for (var i = 0; i < len; i++) {
     if (str[i].charCodeAt() > 255) {
       count++;
+
     }
   }
   nameLen = len + count;
@@ -35,6 +36,8 @@ function songName() {
     $SongName.css({
       'animation': 'songNameRuning 10s cubic-bezier(0, 0, 1, 1) alternate infinite'
     })
+
+
   } else {
     $SongName.css({
       'transform': 'translate3d(1%, 0px, 0px)'
@@ -49,7 +52,9 @@ function getData(url) {
     type: 'GET',
     url: url,
     success: function (data) {
+
       dataList = data;
+
       len = data.length;
 
       control = new root.controlIndex(len, currSongIndex);
@@ -78,11 +83,11 @@ function getData(url) {
 //  绑定移动端事件
 function bindTouch() {
 
-  // 进度条的滑屏事件
   function proWrap() {
     var left = $('.pro-wrap').offset().left;
     var width = parseInt($('.pro-wrap').css('width'));
     $('.slider').on({
+
       touchstart: function () {
         $(this).css({
           'height': '13px',
@@ -91,6 +96,7 @@ function bindTouch() {
         })
         root.progress.stop();
       },
+
       touchmove: function (e) {
         var x = e.changedTouches[0].clientX;
         var pro = (x - left) / width;
@@ -103,17 +109,20 @@ function bindTouch() {
         root.progress.updata(pro);
         if ($('.play').attr('class').indexOf('playing') > -1) {
           $('.play').add('.arm-img').removeClass('playing');
+
           // 碟盘停止旋转
-          //  cancelAnimationFrame(timer);
+          cancelAnimationFrame(timer);
         };
       },
 
       touchend: function (e) {
+
         $(this).css({
           'height': '8px',
           'width': '8px',
           'top': '-3px'
         })
+
         var x = e.changedTouches[0].clientX;
         var pro = (x - left) / width;
         if (pro < 0) {
@@ -122,7 +131,6 @@ function bindTouch() {
           pro = 1;
         }
         var currPlay = root.progress.conversonSecondTime(dataList[currSongIndex].duration) * pro;
-        console.log(currPlay)
         root.progress.updata(pro)
 
         setTimeout(function () {
@@ -139,12 +147,12 @@ function bindTouch() {
           deg = $('.curr-img').attr('data-deg');
           rotate(deg);
         }, 1500)
+
       }
+
     })
   }
 
-
-  // 歌盘的滑屏事件
   function songImg() {
     var currStartX;
     var currLastX;
@@ -153,15 +161,17 @@ function bindTouch() {
     var bodyWidth = $('body').width();
     $('.img-box').on({
       touchstart: function (e) {
+
         currStartX = e.changedTouches[0].pageX; //最近有定位的父级
         $('.curr-img').css({
           'transition': 'none'
         })
-      
+
+
+
+        cancelAnimationFrame(timer);
         $('.arm-img').add('.play').removeClass('playing');
-        // 碟盘停止旋转
-        // cancelAnimationFrame(timer);
-        console.log(timer);
+
       },
 
       touchmove: function (e) {
@@ -198,19 +208,17 @@ function bindTouch() {
 
         // 切下一首歌
         if (currBoxLeft < (-width / 2)) {
+
           $('body').trigger('play-changer', control.next());
           root.switch.imgTouchMove($('.next-img'), $('.pro-img'), 'next-img', 'pro-img', '-132%', '-142%', '-132%')
 
-          // $('.curr-img').attr('data-deg','0')
-          // rotate(0);
+
           // 切上一首歌
         } else if (currBoxLeft >= bodyWidth - (width / 2)) {
+
           $('body').trigger('play-changer', control.prev());
           root.switch.imgTouchMove($('.pro-img'), $('.next-img'), 'pro-img', 'next-img', '142%', '132%', '0')
-          $('.curr-img').attr('data-deg', 0)
 
-          // $('.curr-img').attr('data-deg','0')
-          // rotate(0);
 
           // 滑动碟盘切歌不成功       
         } else {
@@ -239,9 +247,7 @@ function bindEvent() {
 
   //自定义一个播放状态改变的事件
   $('body').on('play-changer', function (e, index) {
-    // audio.getAudio(dataList[index].audio);
-    console.log(timer);
-    cancelAnimationFrame(timer);
+    audio.getAudio(dataList[index].audio);
 
     $('.play').add('.arm-img').removeClass('playing');
 
@@ -256,7 +262,7 @@ function bindEvent() {
 
       // 延迟播放不但更真实，而且不会在列表里切歌发上冲突
       audio.play();
-    }, 400)
+    }, 500)
 
     $('.list').attr('song-index', index)
 
@@ -266,14 +272,14 @@ function bindEvent() {
     //渲染当前播放的时长及进度条
     root.progress.start(dataList[index]);
 
-
     // 歌曲索引缓存到浏览器的cookie中
     saveCookie(index)
-    // //每次切歌都将上次播放盘的旋转角度清零
-    // $('.curr-img').find('div').css({
-    //   'transform': 'translatez(0px) rotateZ(0deg)',
-    //   'transition': 'none'
-    // }).attr('data-deg', '0')
+
+    //每次切歌都将上次播放盘的旋转角度清零
+    $('.curr-img').find('div').css({
+      'transform': 'translatez(0px) rotateZ(0deg)',
+      'transition': 'none'
+    }).attr('data-deg', '0')
   })
 
   // 上一曲
@@ -296,15 +302,15 @@ function bindEvent() {
 
   // 播放&暂停
   $('.play').on('click', function () {
-    console.log(timer);
+
     // pause为暂停状态
     if (audio.status == 'pause') {
+      audio.play();
 
       ///碟盘旋转
       deg = $('.curr-img').attr('data-deg');
       rotate(deg);
 
-      audio.play();
       songName();
 
       // 渲染进度条移动和已播放的时间
@@ -314,12 +320,10 @@ function bindEvent() {
 
       // 碟盘停止旋转
       cancelAnimationFrame(timer);
-      deg = $('.curr-img').attr('data-deg');
 
       // 进度条和已播放时间停止渲染
       root.progress.stop();
     }
-
     $('.play').add('.arm-img').toggleClass('playing');
   })
 
@@ -360,8 +364,7 @@ function bindEvent() {
     // 展示列表，并移到指定地方
     $(this).find('.list-top').css({
       'opacity': '1',
-      // 'transform': ' translate3d(-50%, -82%, 0)',
-      'transform': ' translate3d(-50%, -62%, 0)',
+      'transform': ' translate3d(-50%, -82%, 0)',
     })
 
     // 点击列表进行切歌
@@ -380,37 +383,36 @@ function bindEvent() {
           // 记录当前在列表点击的歌曲索引
           $('.list').attr('song-index', $(event).parent().attr('data-index'));
 
-          // 暂停当前正在播放的音乐
-          audio.pause();
           // 刷新左右切歌的索引,并将字符串用隐式类型转化转为数字
           currSongIndex = $('.list').attr('song-index')
-          // control = new root.controlIndex(dataList.length, +currSongIndex);
-
+          control = new root.controlIndex(dataList.length, +currSongIndex);
+          // 暂停当前正在播放的音乐
+          audio.pause();
           // 歌曲索引缓存到浏览器的cookie中
           saveCookie(currSongIndex);
-          $('.curr-img').find('img').attr('src', '../image/bg.jpg')
 
           // 找到音频和图片
           root.rendering(dataList, $('.list').attr('song-index'));
           audio.getAudio(dataList[$('.list').attr('song-index')].audio);
-          // 播放
 
+          // 播放
           $('body').trigger('play-changer', $('.list').attr('song-index'));
+
           //记录当前的ul到屏幕的高度
           scroTop = e.offsetY;
 
           // 每次点击列表都会重绘ul所以不能在这里給li加active
           $('ul', '.songList').find('li').eq(currSongIndex).addClass('active');
 
-          // $('.img-box').css({
-          //   'left': 0,
-          //   'transition': 'left .3s cubic-bezier(0, 0, 1, 1)'
-          // });
-          // rotate(0)
+          $('.img-box').css({
+            'left': 0,
+            'transition': 'left .3s cubic-bezier(0, 0, 1, 1)'
+          });
+          rotate(0)
         }
       } else {
         // 点击到的是删除该歌曲
-        alert('暂不支持，也别期待了.........')
+        alert('好难维护啊，所以就不加功能了，就别期待了.........')
       }
     })
 
@@ -426,7 +428,9 @@ function bindEvent() {
 
       //等列表退回原位才取消列表的样式
       setTimeout(function () {
+
         $('.list').removeClass('playList');
+
       }, 300)
       $(this).css({
         'display': 'none'
@@ -435,22 +439,18 @@ function bindEvent() {
   })
 }
 
-// 旋转
+//旋转
 function rotate(deg) {
-  var deg = Number(deg)
-  cancelAnimationFrame(timer);
-  $('.curr-img').attr('data-deg', deg.toFixed(1));
-  $('.curr-img').find('div').css({
-    'transform': 'translatez(0px) rotateZ(' + deg + 'deg)',
-    'transition': "none 0s"
-  })
 
+  cancelAnimationFrame(timer);
 
   // 旋转值被记录到行间
+  var deg = Number(deg);
+
   function frame() {
     deg += .2;
-
     $('.curr-img').attr('data-deg', deg.toFixed(1));
+
     $('.curr-img').find('div').css({
       'transform': 'translatez(0px) rotateZ(' + deg + 'deg)',
       'transition': 'transform .1s cubic-bezier(0, 0, 1, 1) '
@@ -458,13 +458,10 @@ function rotate(deg) {
     timer = requestAnimationFrame(frame)
   }
 
-  setTimeout(function () {
-    frame();
-  }, 500)
-
+  frame();
 }
 
-// 当前歌曲播放完毕自动切歌
+//当前歌曲播放完毕自动切歌
 audio.bindMediaEnd(function () {
 
   cancelAnimationFrame(timer);
@@ -477,18 +474,12 @@ audio.bindMediaEnd(function () {
 
 // 把当前的歌曲索引缓存到浏览器的cookie中
 function saveCookie(currSongIndex) {
-  document.cookie = 'song_index=' + currSongIndex + ';max-age=10000';
+  document.cookie = 'song_index=' + currSongIndex + ';max-age=1000000000';
 }
 
 //获取cookie
 function getCookie() {
-  var cookie_str = document.cookie.match(/song_index=\d+/)[0]
-  if (cookie_str != null) {
-    currSongIndex = Number(cookie_str.replace(/\w+=/g, ''));
-
-  } else {
-    currSongIndex = 0;
-  }
+  currSongIndex = document.cookie.match(/song_index=\d+/) ? Number(document.cookie.match(/song_index=\d+/)[0].replace(/\w+=/g, '')) : 0
 }
 
 
