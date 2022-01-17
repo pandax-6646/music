@@ -493,4 +493,4 @@ function getCookie() {
 
 
 getCookie();
-getData('../moke/data.json')
+getData('../mock/data.json')
